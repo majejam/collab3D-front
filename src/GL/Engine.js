@@ -3,12 +3,19 @@ import Raf from '@/utils/raf'
 import viewport from '@/utils/viewport'
 import * as THREE from 'three'
 
+import { OrbitControls } from '@/GL/controls/OrbitControls.js'
+import { TransformControls } from '@/GL/controls/TransformControls.js'
+
 class Engine {
   constructor() {
     this.$el = null
     this.scene = null
     this.camera = null
     this.renderer = null
+
+    this.controls = null
+
+    this.transform = null
 
     this._update = this.update.bind(this)
     this._onResize = this.onResize.bind(this)
@@ -37,6 +44,22 @@ class Engine {
       })
     }
 
+    const size = 100
+    const divisions = 100
+
+    const gridHelper = new THREE.GridHelper(size, divisions)
+    this.scene.add(gridHelper)
+
+    console.log(OrbitControls)
+
+    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
+
+    this.transform = new TransformControls(this.camera, this.renderer.domElement)
+
+    this.transform.addEventListener('dragging-changed', event => {
+      this.controls.enabled = !event.value
+    })
+
     this.onResize()
 
     this.debug()
@@ -50,6 +73,9 @@ class Engine {
     const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
     const cube = new THREE.Mesh(geometry, material)
     this.scene.add(cube)
+
+    this.transform.attach(cube)
+    this.scene.add(this.transform)
   }
 
   onResize() {
