@@ -1,0 +1,12 @@
+:root {
+  --font-primary: 'Noto Sans', sans-serif;
+  --font-secondary: 'Montserrat', sans-serif;
+  --font-decorative: 'Gentium', serif;
+
+  font: 100%/1 sans-serif;
+}
+
+* {
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
