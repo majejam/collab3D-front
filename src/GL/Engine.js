@@ -1,5 +1,6 @@
 import Bus from '@/utils/bus'
 import Raf from '@/utils/raf'
+import Socket from '@/socket/index.js'
 import viewport from '@/utils/viewport'
 import * as THREE from 'three'
 
@@ -41,6 +42,10 @@ class Engine {
 
     this.debug()
 
+    const socket = new Socket()
+
+    console.log(socket)
+
     Bus.$on('resize', this._onResize)
     Raf.add(this._update)
   }
@@ -54,7 +59,7 @@ class Engine {
 
   onResize() {
     // this.renderer.setPixelRatio(window.devicePixelRatio);
-    console.log('cc')
+    console.log('resize')
     this.camera.aspect = viewport.width / viewport.height
     this.camera.updateProjectionMatrix()
     this.renderer.setSize(viewport.width, viewport.height)

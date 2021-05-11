@@ -12,6 +12,7 @@
     "dat.gui": "^0.7.7",
     "prettier": "^2.2.1",
     "socket.io": "^4.0.2",
+    "socket.io-client": "^4.1.0",
     "three": "^0.128.0",
     "vue": "^2.6.11",
     "vue-axios": "^3.2.4",
