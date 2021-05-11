@@ -54,7 +54,7 @@ class Engine {
 
   onResize() {
     // this.renderer.setPixelRatio(window.devicePixelRatio);
-    console.log('resize')
+
     this.camera.aspect = viewport.width / viewport.height
     this.camera.updateProjectionMatrix()
     this.renderer.setSize(viewport.width, viewport.height)
