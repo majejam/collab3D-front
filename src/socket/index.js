@@ -1,10 +1,17 @@
 import { io } from 'socket.io-client'
 
-export default class Socket {
+class Socket {
   constructor() {
     console.log(io)
-    const socket = io('http://localhost:9000/')
+    this.socket = io('http://localhost:9000/')
+    console.log('Connection')
+  }
 
-    socket.emit('create', 'hello')
+  init() {
+    this.socket.emit('create', 'hello')
   }
 }
+
+const SocketInstance = new Socket()
+
+export default SocketInstance
