@@ -1,6 +1,7 @@
 <template>
   <div>
     <span>Socket</span>
+    <button @click="handleTest">Test Socket</button>
   </div>
 </template>
 
@@ -11,5 +12,10 @@ export default {
   mounted() {
     Socket.init()
   },
+  methods: {
+    handleTest() {
+      Socket.testing()
+    }
+  }
 }
 </script>
