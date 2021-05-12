@@ -2,9 +2,8 @@ import Bus from '@/utils/bus'
 import Raf from '@/utils/raf'
 import viewport from '@/utils/viewport'
 import * as THREE from 'three'
-
-import { OrbitControls } from '@/GL/controls/OrbitControls.js'
-import { TransformControls } from '@/GL/controls/TransformControls.js'
+import Camera from '@/GL/Camera'
+import ObjectControls from '@/GL/ObjectControls'
 
 class Engine {
   constructor() {
@@ -22,11 +21,34 @@ class Engine {
   }
 
   init(el) {
-    this.$el = el
-    this.camera = new THREE.PerspectiveCamera(65, viewport.width / viewport.height, 0.1, 10000)
-    this.camera.position.z = 10
-    this.scene = new THREE.Scene()
+    this.createRenderer(el)
 
+    this.createScene()
+
+    this.createHelper(100, 100)
+
+    Camera.init()
+
+    ObjectControls.init()
+
+    this.onResize()
+
+    this.debug()
+
+    this.setEvents()
+  }
+
+  debug() {
+    const geometry = new THREE.BoxGeometry(1, 1, 1)
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
+    const cube = new THREE.Mesh(geometry, material)
+    this.scene.add(cube)
+
+    ObjectControls.attach(cube)
+  }
+
+  createRenderer(el) {
+    this.$el = el
     if (window.WebGL2RenderingContext !== undefined && !/\bforcewebgl1\b/.test(window.location.search)) {
       this.renderer = new THREE.WebGLRenderer({
         canvas: this.$el,
@@ -43,44 +65,20 @@ class Engine {
         antialias: true,
       })
     }
-
-    const size = 100
-    const divisions = 100
-
-    const gridHelper = new THREE.GridHelper(size, divisions)
-    this.scene.add(gridHelper)
-
-    console.log(OrbitControls)
-
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement)
-
-    this.transform = new TransformControls(this.camera, this.renderer.domElement)
-
-    this.transform.addEventListener('dragging-changed', event => {
-      this.controls.enabled = !event.value
-    })
-
-    this.onResize()
-
-    this.debug()
-
-    Bus.$on('resize', this._onResize)
-    Raf.add(this._update)
   }
 
-  debug() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    const cube = new THREE.Mesh(geometry, material)
-    this.scene.add(cube)
+  createScene() {
+    this.camera = new THREE.PerspectiveCamera(65, viewport.width / viewport.height, 0.1, 10000)
+    this.camera.position.z = 10
+    this.scene = new THREE.Scene()
+  }
 
-    this.transform.attach(cube)
-    this.scene.add(this.transform)
+  createHelper(sx, sy) {
+    const gridHelper = new THREE.GridHelper(sx, sy)
+    this.scene.add(gridHelper)
   }
 
   onResize() {
-    // this.renderer.setPixelRatio(window.devicePixelRatio);
-
     this.camera.aspect = viewport.width / viewport.height
     this.camera.updateProjectionMatrix()
     this.renderer.setSize(viewport.width, viewport.height)
@@ -103,9 +101,15 @@ class Engine {
     this.renderer.render(this.scene, this.camera)
   }
 
-  setEvents() {}
+  setEvents() {
+    Bus.$on('resize', this._onResize)
+    Raf.add(this._update)
+  }
 
-  removeEvents() {}
+  removeEvents() {
+    Bus.$off('resize', this._onResize)
+    Raf.remove(this._update)
+  }
 }
 
 const EngineInstance = new Engine()
