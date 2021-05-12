@@ -2,7 +2,6 @@ import { io } from 'socket.io-client'
 
 class Socket {
   constructor() {
-    console.log(io)
     this.socket = io('http://localhost:9000')
     console.log('Connection')
   }
@@ -15,9 +14,8 @@ class Socket {
     this.socket.emit('join', roomKey)
   }
 
-  testing() {
-    console.log("testing!!!")
-    this.socket.emit('test', 'hey')
+  moveX(roomKey) {
+    this.socket.emit('moveX', roomKey)
   }
 }
 
