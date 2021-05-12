@@ -16,6 +16,11 @@ const routes = [
     name: 'Room',
     component: Room,
   },
+  {
+    path: '/room/:roomKey',
+    name: 'RoomJoin',
+    component: Room,
+  },
 ]
 
 const router = new VueRouter({

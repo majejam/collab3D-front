@@ -10,7 +10,11 @@ import Socket from '@/socket/index.js'
 export default {
   name: 'Home',
   mounted() {
-    Socket.init()
+    if(this.$route.params.roomKey) {
+      Socket.join(this.$route.params.roomKey)
+    } else {
+      Socket.init()
+    }
   },
   methods: {
     handleTest() {

@@ -11,6 +11,10 @@ class Socket {
     this.socket.emit('create', 'hello')
   }
 
+  join(roomKey) {
+    this.socket.emit('join', roomKey)
+  }
+
   testing() {
     console.log("testing!!!")
     this.socket.emit('test', 'hey')
