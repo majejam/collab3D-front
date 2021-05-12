@@ -4,6 +4,7 @@ import viewport from '@/utils/viewport'
 import * as THREE from 'three'
 import Camera from '@/GL/Camera'
 import ObjectControls from '@/GL/ObjectControls'
+import Object3D from '@/GL/Object3D'
 
 class Engine {
   constructor() {
@@ -39,12 +40,14 @@ class Engine {
   }
 
   debug() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    const cube = new THREE.Mesh(geometry, material)
-    this.scene.add(cube)
-
-    ObjectControls.attach(cube)
+    new Object3D({
+      type: 'box',
+      interactable: true,
+    })
+    new Object3D({
+      type: 'box',
+      interactable: true,
+    })
   }
 
   createRenderer(el) {
