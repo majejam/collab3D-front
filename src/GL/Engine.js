@@ -6,6 +6,7 @@ import Camera from '@/GL/Camera'
 import Keyboard from '@/GL/Keyboard'
 import ObjectControls from '@/GL/ObjectControls'
 import Object3D from '@/GL/Object3D'
+import ViewportInfo from '@/GL/ViewportInfo'
 
 class Engine {
   constructor() {
@@ -17,6 +18,8 @@ class Engine {
     this.controls = null
 
     this.transform = null
+
+    this.infos = null
 
     this._update = this.update.bind(this)
     this._onResize = this.onResize.bind(this)
@@ -38,6 +41,8 @@ class Engine {
     this.debug()
 
     new Keyboard()
+
+    this.infos = new ViewportInfo(this.scene)
 
     this.setEvents()
   }

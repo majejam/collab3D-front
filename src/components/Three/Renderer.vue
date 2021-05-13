@@ -2,18 +2,23 @@
   <div>
     <canvas ref="webglrenderer"> </canvas>
 
-    <span class="debug">{{ camera.intersectray }}</span>
+    <div class="debug" v-if="engine.infos">
+      <ul>
+        <li>Objects : {{ engine.infos.objects }}</li>
+        <li>Vertices : {{ engine.infos.vertices }}</li>
+        <li>Trangles : {{ engine.infos.triangles }}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 import Engine from '@/GL/Engine'
-import Camera from '@/GL/Camera'
 export default {
   name: 'Renderer',
   data() {
     return {
-      camera: Camera,
+      engine: Engine,
     }
   },
   mounted() {
