@@ -46,10 +46,12 @@ class Engine {
     new Object3D({
       type: 'box',
       interactable: true,
+      position: { x: 0, y: 0, z: 0 },
     })
     new Object3D({
       type: 'box',
       interactable: true,
+      position: { x: 2, y: 0, z: 0 },
     })
   }
 

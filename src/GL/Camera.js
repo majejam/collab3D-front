@@ -18,6 +18,8 @@ class Camera {
     this.dragging = false
     this.timeout = null
 
+    this.intersectray = 0
+
     this.mouse = {
       x: 0,
       y: 0,
@@ -40,8 +42,16 @@ class Camera {
     this.raycaster.setFromCamera(this.mouse, this.camera)
     this.intersects = this.raycaster.intersectObjects(this.scene.children)
 
-    if (this.intersects.length > 0 && this.intersects[0].object.interactable) {
-      this.currentInteractableObjectHovered = this.intersects[0].object
+    if (this.intersects.length > 0) {
+      var intersect = this.intersects.filter(itr => {
+        return itr.object.interactable === true
+      })
+      if (intersect.length > 0) {
+        this.currentInteractableObjectHovered = intersect[0].object
+      } else {
+        this.currentInteractableObjectHovered = null
+      }
+      this.intersectray = intersect.length
     } else {
       this.currentInteractableObjectHovered = null
     }
@@ -77,7 +87,6 @@ class Camera {
     this.renderer.domElement.addEventListener('click', this._onClick)
 
     this.controls.addEventListener('change', () => {
-      console.log('hello')
       clearTimeout(this.timeout)
       this.dragging = true
       this.timeout = setTimeout(() => {

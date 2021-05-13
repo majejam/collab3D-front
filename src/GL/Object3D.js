@@ -4,7 +4,7 @@ import ObjectControls from '@/GL/ObjectControls'
 import SceneObject from '@/GL/SceneObject'
 
 export default class Object3D {
-  constructor(opt = {}) {
+  constructor(opt = { position: {} }) {
     this.geometry = null
     this.material = null
     this.mesh = null
@@ -33,7 +33,7 @@ export default class Object3D {
 
     this.mesh.interactable = true
 
-    this.position(1 + Math.round(Math.random() * 20), 1, 1)
+    this.position(this.getPosition().x, this.getPosition().y, this.getPosition().z)
     Engine.scene.add(this.mesh)
     console.log(this.mesh)
     SceneObject.add(this.mesh)
@@ -42,6 +42,14 @@ export default class Object3D {
   /**
    * Helpers
    */
+
+  getPosition() {
+    return {
+      x: this.opt.position.x ? this.opt.position.x : 0,
+      y: this.opt.position.y ? this.opt.position.y : 0,
+      z: this.opt.position.z ? this.opt.position.z : 0,
+    }
+  }
 
   position(x, y, z) {
     this.mesh.position.set(x, y, z)
