@@ -37,10 +37,10 @@ export default {
     }
   },
   created() {
-    this.io.socket.on('updateDatas', (data) => {
-      console.log(data)
-      this.currentPositionX = data.sceneData.objectPosition[1]
-    })
+    // this.io.socket.on('updateDatas', (data) => {
+    //   console.log(data)
+    //   this.currentPositionX = data.sceneData.objectPosition[1]
+    // })
   }
 }
 </script>
