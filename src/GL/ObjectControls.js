@@ -1,5 +1,6 @@
 import Engine from '@/GL/Engine'
 import Camera from '@/GL/Camera'
+import Socket from '@/socket/index.js'
 
 import { TransformControls } from '@/GL/controls/TransformControls.js'
 
@@ -36,11 +37,12 @@ class ObjectControls {
       Camera.controls.enabled = !event.value
       console.log(this.transform.object.realtimeid)
       console.log('moving')
+      Socket.moveObject(Socket.roomKey, this.transform.object.position, this.transform.object.realtimeid)
     })
 
-    this.transform.addEventListener('objectChange', () => {
-      console.log('movindzdzg')
-    })
+    // this.transform.addEventListener('objectChange', () => {
+    //   console.log('movindzdzg')
+    // })
 
     this.transform.addEventListener('mouseUp', () => {
       setTimeout(() => {
@@ -50,6 +52,12 @@ class ObjectControls {
 
     this.transform.addEventListener('mouseDown', () => {
       this.dragging = true
+    })
+
+    Socket.socket.on('updateDatas', (data) => {
+      if(data.sceneData.objectId === this.transform.object.realtimeid) {
+        this.transform.object.position = data.sceneData.objectPosition
+      }
     })
   }
 
