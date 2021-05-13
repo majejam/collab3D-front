@@ -32,6 +32,7 @@ export default class Object3D {
     this.mesh = new THREE.Mesh(this.geometry, this.material)
 
     this.mesh.interactable = true
+    this.mesh.realtimeid = 0
 
     this.position(this.getPosition().x, this.getPosition().y, this.getPosition().z)
     Engine.scene.add(this.mesh)

@@ -12,6 +12,8 @@ class SceneObject {
       id: this.id,
     }
 
+    mesh.realtimeid = this.id
+
     const object = {
       mesh: mesh,
       data: data,

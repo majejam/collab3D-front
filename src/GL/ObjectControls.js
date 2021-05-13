@@ -34,6 +34,12 @@ class ObjectControls {
   setEvents() {
     this.transform.addEventListener('dragging-changed', event => {
       Camera.controls.enabled = !event.value
+      console.log(this.transform.object.realtimeid)
+      console.log('moving')
+    })
+
+    this.transform.addEventListener('transform-changed', () => {
+      console.log('movindzdzg')
     })
 
     this.transform.addEventListener('mouseUp', () => {
