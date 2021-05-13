@@ -15,6 +15,8 @@ class Camera {
     this.intersects = null
     this.currentInteractableObjectHovered = null
     this.currentObject = null
+    this.dragging = false
+    this.timeout = null
 
     this.mouse = {
       x: 0,
@@ -54,7 +56,7 @@ class Camera {
     if (this.currentInteractableObjectHovered !== null) {
       this.currentObject = this.currentInteractableObjectHovered
       ObjectControls.attach(this.currentObject)
-    } else {
+    } else if (!this.dragging) {
       this.currentObject = null
       ObjectControls.detach()
     }
@@ -73,6 +75,15 @@ class Camera {
     Raf.add(this._update)
     this.renderer.domElement.addEventListener('mousemove', this._updateMouse)
     this.renderer.domElement.addEventListener('click', this._onClick)
+
+    this.controls.addEventListener('change', () => {
+      console.log('hello')
+      clearTimeout(this.timeout)
+      this.dragging = true
+      this.timeout = setTimeout(() => {
+        this.dragging = false
+      }, 100)
+    })
   }
 
   removeEvents() {}

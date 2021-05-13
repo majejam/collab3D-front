@@ -3,6 +3,7 @@ import Raf from '@/utils/raf'
 import viewport from '@/utils/viewport'
 import * as THREE from 'three'
 import Camera from '@/GL/Camera'
+import Keyboard from '@/GL/Keyboard'
 import ObjectControls from '@/GL/ObjectControls'
 import Object3D from '@/GL/Object3D'
 
@@ -35,6 +36,8 @@ class Engine {
     this.onResize()
 
     this.debug()
+
+    new Keyboard()
 
     this.setEvents()
   }
