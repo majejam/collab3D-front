@@ -2,6 +2,11 @@ import Bus from '@/utils/bus'
 import Raf from '@/utils/raf'
 import viewport from '@/utils/viewport'
 import * as THREE from 'three'
+import Camera from '@/GL/Camera'
+import Keyboard from '@/GL/Keyboard'
+import ObjectControls from '@/GL/ObjectControls'
+import Object3D from '@/GL/Object3D'
+import ViewportInfo from '@/GL/ViewportInfo'
 
 class Engine {
   constructor() {
@@ -10,16 +15,53 @@ class Engine {
     this.camera = null
     this.renderer = null
 
+    this.controls = null
+
+    this.transform = null
+
+    this.infos = null
+
     this._update = this.update.bind(this)
     this._onResize = this.onResize.bind(this)
   }
 
   init(el) {
-    this.$el = el
-    this.camera = new THREE.PerspectiveCamera(65, viewport.width / viewport.height, 0.1, 10000)
-    this.camera.position.z = 10
-    this.scene = new THREE.Scene()
+    this.createRenderer(el)
 
+    this.createScene()
+
+    this.createHelper(100, 100)
+
+    Camera.init()
+
+    ObjectControls.init()
+
+    this.onResize()
+
+    this.debug()
+
+    new Keyboard()
+
+    this.infos = new ViewportInfo(this.scene)
+
+    this.setEvents()
+  }
+
+  debug() {
+    new Object3D({
+      type: 'box',
+      interactable: true,
+      position: { x: 0, y: 0, z: 0 },
+    })
+    new Object3D({
+      type: 'box',
+      interactable: true,
+      position: { x: 2, y: 0, z: 0 },
+    })
+  }
+
+  createRenderer(el) {
+    this.$el = el
     if (window.WebGL2RenderingContext !== undefined && !/\bforcewebgl1\b/.test(window.location.search)) {
       this.renderer = new THREE.WebGLRenderer({
         canvas: this.$el,
@@ -36,25 +78,20 @@ class Engine {
         antialias: true,
       })
     }
-
-    this.onResize()
-
-    this.debug()
-
-    Bus.$on('resize', this._onResize)
-    Raf.add(this._update)
   }
 
-  debug() {
-    const geometry = new THREE.BoxGeometry(1, 1, 1)
-    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 })
-    const cube = new THREE.Mesh(geometry, material)
-    this.scene.add(cube)
+  createScene() {
+    this.camera = new THREE.PerspectiveCamera(65, viewport.width / viewport.height, 0.1, 10000)
+    this.camera.position.z = 10
+    this.scene = new THREE.Scene()
+  }
+
+  createHelper(sx, sy) {
+    const gridHelper = new THREE.GridHelper(sx, sy)
+    this.scene.add(gridHelper)
   }
 
   onResize() {
-    // this.renderer.setPixelRatio(window.devicePixelRatio);
-    console.log('resize')
     this.camera.aspect = viewport.width / viewport.height
     this.camera.updateProjectionMatrix()
     this.renderer.setSize(viewport.width, viewport.height)
@@ -77,9 +114,15 @@ class Engine {
     this.renderer.render(this.scene, this.camera)
   }
 
-  setEvents() {}
+  setEvents() {
+    Bus.$on('resize', this._onResize)
+    Raf.add(this._update)
+  }
 
-  removeEvents() {}
+  removeEvents() {
+    Bus.$off('resize', this._onResize)
+    Raf.remove(this._update)
+  }
 }
 
 const EngineInstance = new Engine()
