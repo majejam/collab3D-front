@@ -38,7 +38,7 @@ class ObjectControls {
       console.log('moving')
     })
 
-    this.transform.addEventListener('transform-changed', () => {
+    this.transform.addEventListener('objectChange', () => {
       console.log('movindzdzg')
     })
 
