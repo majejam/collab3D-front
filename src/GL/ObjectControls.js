@@ -9,6 +9,8 @@ class ObjectControls {
     this.transform = null
     this.renderer = null
     this.scene = null
+
+    this.dragging = false
   }
 
   init() {
@@ -26,12 +28,22 @@ class ObjectControls {
   }
 
   detach() {
-    this.transform.detach()
+    if (!this.dragging) this.transform.detach()
   }
 
   setEvents() {
     this.transform.addEventListener('dragging-changed', event => {
       Camera.controls.enabled = !event.value
+    })
+
+    this.transform.addEventListener('mouseUp', () => {
+      setTimeout(() => {
+        this.dragging = false
+      }, 100)
+    })
+
+    this.transform.addEventListener('mouseDown', () => {
+      this.dragging = true
     })
   }
 
