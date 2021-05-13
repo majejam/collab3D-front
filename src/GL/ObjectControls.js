@@ -11,6 +11,8 @@ class ObjectControls {
     this.renderer = null
     this.scene = null
 
+    this.timeout = null
+
     this.dragging = false
   }
 
@@ -32,8 +34,29 @@ class ObjectControls {
     if (!this.dragging) this.transform.detach()
   }
 
+  throttled(delay, fn) {
+    let lastCall = 0
+    return function (...args) {
+      const now = new Date().getTime()
+      if (now - lastCall < delay) {
+        return
+      }
+      lastCall = now
+      return fn(...args)
+    }
+  }
+
+  objMove(_e) {
+    console.log('obj move')
+    console.log(_e, this.transform.object.realtimeid)
+  }
+
   setEvents() {
+    this._objMove = this.objMove.bind(this)
+    const tHandler = this.throttled(1000, this._objMove)
+
     this.transform.addEventListener('dragging-changed', event => {
+      console.log('dragging changed')
       Camera.controls.enabled = !event.value
       console.log(this.transform.object.realtimeid)
       console.log('moving')
@@ -44,13 +67,17 @@ class ObjectControls {
     //   console.log('movindzdzg')
     // })
 
+    this.transform.addEventListener('objectChange', tHandler)
+
     this.transform.addEventListener('mouseUp', () => {
+      console.log('mouse up')
       setTimeout(() => {
         this.dragging = false
       }, 100)
     })
 
     this.transform.addEventListener('mouseDown', () => {
+      console.log('mouse down')
       this.dragging = true
     })
 
