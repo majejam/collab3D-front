@@ -13,6 +13,8 @@ class ObjectControls {
 
     this.timeout = null
 
+    this.currentMesh = null
+
     this.dragging = false
   }
 
@@ -27,11 +29,20 @@ class ObjectControls {
   }
 
   attach(mesh) {
+    this.currentMesh = mesh
     this.transform.attach(mesh)
   }
 
   detach() {
-    if (!this.dragging) this.transform.detach()
+    if (!this.dragging) {
+      this.transform.detach()
+      this.currentMesh = null
+    }
+  }
+
+  delete() {
+    this.scene.remove(this.currentMesh)
+    this.detach()
   }
 
   throttled(delay, fn) {
