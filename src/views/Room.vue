@@ -1,8 +1,6 @@
 <template>
   <div>
     <Renderer />
-    <!-- <button @click="handleMoveX">Test Socket</button>
-    <span>{{ currentPositionX }}</span> -->
   </div>
 </template>
 
@@ -22,9 +20,6 @@ export default {
     if(this.$route.params.roomKey) {
       this.io.roomKey = this.$route.params.roomKey
       this.io.join(this.$route.params.roomKey)
-      this.io.socket.on('send roomInfos', function(data) {
-        console.log(data)
-      })
     } else {
       this.io.init()
       this.io.roomKey = 'hello'
@@ -37,10 +32,10 @@ export default {
     }
   },
   created() {
-    this.io.socket.on('updateDatas', (data) => {
-      console.log(data)
-      this.currentPositionX = data.sceneData.objectPosition[1]
-    })
+    // this.io.socket.on('updateDatas', (data) => {
+    //   console.log(data)
+    //   this.currentPositionX = data.sceneData.objectPosition[1]
+    // })
   }
 }
 </script>

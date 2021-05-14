@@ -7,6 +7,7 @@ import Keyboard from '@/GL/Keyboard'
 import ObjectControls from '@/GL/ObjectControls'
 import Object3D from '@/GL/Object3D'
 import ViewportInfo from '@/GL/ViewportInfo'
+import SceneObject from '@/GL/SceneObject'
 
 class Engine {
   constructor() {
@@ -45,6 +46,8 @@ class Engine {
     this.infos = new ViewportInfo(this.scene)
 
     this.setEvents()
+
+    SceneObject.init()
   }
 
   debug() {
@@ -57,6 +60,11 @@ class Engine {
       type: 'box',
       interactable: true,
       position: { x: 2, y: 0, z: 0 },
+    })
+    new Object3D({
+      type: 'box',
+      interactable: true,
+      position: { x: 5, y: 0, z: 0 },
     })
   }
 

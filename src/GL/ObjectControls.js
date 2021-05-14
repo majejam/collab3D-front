@@ -49,23 +49,18 @@ class ObjectControls {
   objMove(_e) {
     console.log('obj move')
     console.log(_e, this.transform.object.realtimeid)
+    Socket.moveObject(Socket.roomKey, this.transform.object.position, this.transform.object.realtimeid)
   }
 
   setEvents() {
     this._objMove = this.objMove.bind(this)
-    const tHandler = this.throttled(1000, this._objMove)
+    const tHandler = this.throttled(50, this._objMove)
 
     this.transform.addEventListener('dragging-changed', event => {
       console.log('dragging changed')
       Camera.controls.enabled = !event.value
-      console.log(this.transform.object.realtimeid)
       console.log('moving')
-      Socket.moveObject(Socket.roomKey, this.transform.object.position, this.transform.object.realtimeid)
     })
-
-    // this.transform.addEventListener('objectChange', () => {
-    //   console.log('movindzdzg')
-    // })
 
     this.transform.addEventListener('objectChange', tHandler)
 
@@ -79,12 +74,6 @@ class ObjectControls {
     this.transform.addEventListener('mouseDown', () => {
       console.log('mouse down')
       this.dragging = true
-    })
-
-    Socket.socket.on('updateDatas', (data) => {
-      if(data.sceneData.objectId === this.transform.object.realtimeid) {
-        this.transform.object.position = data.sceneData.objectPosition
-      }
     })
   }
 

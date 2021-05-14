@@ -1,7 +1,12 @@
+import Socket from '@/socket/index.js'
 class SceneObject {
   constructor() {
     this.objects = new Array()
-    this.id = 0
+    this.id = 1
+  }
+
+  init() {
+    this.setEvents()
   }
 
   /**
@@ -36,9 +41,25 @@ class SceneObject {
   }
 
   findObject(id) {
-    this.objects.forEach(obj => {
-      if (obj.data.id === id) return obj
-      else return undefined
+    let returnedObj = null
+    for(const obj of this.objects) {
+      if (obj.mesh.realtimeid === id) {
+        returnedObj = obj
+        break
+      }
+      else returnedObj = undefined
+    }
+    return returnedObj
+  }
+
+  setEvents() {
+    Socket.socket.on('updateDatas', (data) => {
+      data.sceneData.objects.forEach(object => {
+        const currentObj = this.findObject(object.objectId)
+        if(currentObj) {
+          currentObj.mesh.position.set(object.objectPosition.x, object.objectPosition.y, object.objectPosition.z)
+        }
+      })
     })
   }
 }
