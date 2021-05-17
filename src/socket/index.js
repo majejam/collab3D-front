@@ -22,6 +22,10 @@ class Socket {
   moveObject(roomKey, objectPosition, objectId) {
     this.socket.emit('objectMoved', roomKey, objectPosition, objectId)
   }
+
+  addObject(roomKey, objectId) {
+    this.socket.emit('addObject', roomKey, objectId)
+  }
 }
 
 const SocketInstance = new Socket()
