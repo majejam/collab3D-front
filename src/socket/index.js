@@ -26,6 +26,10 @@ class Socket {
   addObject(roomKey, objectId) {
     this.socket.emit('addObject', roomKey, objectId)
   }
+
+  deleteObject(roomKey, objectId) {
+    this.socket.emit('deleteObject', roomKey, objectId)
+  }
 }
 
 const SocketInstance = new Socket()

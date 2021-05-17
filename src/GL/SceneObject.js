@@ -87,6 +87,9 @@ class SceneObject {
     Socket.socket.on('addObjectRoom', () => {
       this.synchAddObject('box')
     })
+    Socket.socket.on('deleteObjectInRoom', (objectId) => {
+      this.remove(objectId)
+    })
   }
 }
 
