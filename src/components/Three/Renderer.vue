@@ -1,21 +1,16 @@
 <template>
   <div>
+    <UI />
     <canvas ref="webglrenderer"> </canvas>
-
-    <div class="debug" v-if="engine.infos">
-      <ul>
-        <li>Objects : {{ engine.infos.objects }}</li>
-        <li>Vertices : {{ engine.infos.vertices }}</li>
-        <li>Trangles : {{ engine.infos.triangles }}</li>
-      </ul>
-    </div>
   </div>
 </template>
 
 <script>
 import Engine from '@/GL/Engine'
+import UI from '@/components/UI/UI'
 export default {
   name: 'Renderer',
+  components: { UI },
   data() {
     return {
       engine: Engine,
@@ -30,14 +25,6 @@ export default {
 <style lang="scss">
 canvas {
   width: 100%;
-  height: 80vh;
-}
-
-.debug {
-  position: fixed;
-  z-index: 100;
-  color: white;
-  top: 10px;
-  left: 10px;
+  height: 100vh;
 }
 </style>

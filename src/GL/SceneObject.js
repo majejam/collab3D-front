@@ -1,4 +1,5 @@
 import Socket from '@/socket/index.js'
+import Object3D from '@/GL/Object3D'
 class SceneObject {
   constructor() {
     this.objects = new Array()
@@ -7,6 +8,14 @@ class SceneObject {
 
   init() {
     this.setEvents()
+  }
+
+  addObject(type) {
+    new Object3D({
+      type: type,
+      interactable: true,
+      position: { x: 0, y: 0, z: 0 },
+    })
   }
 
   /**
@@ -42,21 +51,20 @@ class SceneObject {
 
   findObject(id) {
     let returnedObj = null
-    for(const obj of this.objects) {
+    for (const obj of this.objects) {
       if (obj.mesh.realtimeid === id) {
         returnedObj = obj
         break
-      }
-      else returnedObj = undefined
+      } else returnedObj = undefined
     }
     return returnedObj
   }
 
   setEvents() {
-    Socket.socket.on('updateDatas', (data) => {
+    Socket.socket.on('updateDatas', data => {
       data.sceneData.objects.forEach(object => {
         const currentObj = this.findObject(object.objectId)
-        if(currentObj) {
+        if (currentObj) {
           currentObj.mesh.position.set(object.objectPosition.x, object.objectPosition.y, object.objectPosition.z)
         }
       })

@@ -56,6 +56,10 @@ export default class Keyboard {
         case 32: // Spacebar
           ObjectControls.transform.enabled = !ObjectControls.transform.enabled
           break
+
+        case 8: // Backspace
+          ObjectControls.delete()
+          break
       }
     })
   }
