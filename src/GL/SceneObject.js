@@ -11,6 +11,16 @@ class SceneObject {
   }
 
   addObject(type) {
+    const obj = new Object3D({
+      type: type,
+      interactable: true,
+      position: { x: 0, y: 0, z: 0 },
+    })
+    // Set that an object has been add to back
+    Socket.addObject('hello', obj)
+  }
+
+  synchAddObject(type) {
     new Object3D({
       type: type,
       interactable: true,
@@ -68,6 +78,9 @@ class SceneObject {
           currentObj.mesh.position.set(object.objectPosition.x, object.objectPosition.y, object.objectPosition.z)
         }
       })
+    })
+    Socket.socket.on('addObjectRoom', () => {
+      this.synchAddObject('box')
     })
   }
 }
