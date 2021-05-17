@@ -4,6 +4,7 @@ class Socket {
   constructor() {
     this.socket = io('http://localhost:9000')
     this.roomKey = null
+    this.userId = null
     console.log('Connection')
   }
 
@@ -13,6 +14,10 @@ class Socket {
 
   join(roomKey) {
     this.socket.emit('join', roomKey)
+  }
+
+  userJoined(roomKey, userId) {
+    this.socket.emit('initDatas', roomKey, userId)
   }
 
   moveX(roomKey) {

@@ -19,7 +19,7 @@ class SceneObject {
       position: { x: 0, y: 0, z: 0 },
     })
     // Set that an object has been add to back
-    Socket.addObject('hello', obj)
+    Socket.addObject('hello', obj.mesh.realtimeid)
   }
 
   synchAddObject(type) {
@@ -89,6 +89,18 @@ class SceneObject {
     })
     Socket.socket.on('deleteObjectInRoom', (objectId) => {
       this.remove(objectId)
+    })
+    Socket.socket.on('userJoined', (userId) => {
+      Socket.userJoined('hello', userId)
+    })
+    Socket.socket.on('initRoomData', data => {
+      data.sceneData.objects.forEach(object => {
+        this.synchAddObject('box')
+        const currentObj = this.findObject(object.objectId)
+        if (currentObj) {
+          currentObj.mesh.position.set(object.objectPosition.x, object.objectPosition.y, object.objectPosition.z)
+        }
+      })
     })
   }
 }
