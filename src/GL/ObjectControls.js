@@ -42,7 +42,7 @@ class ObjectControls {
 
   delete() {
     // Trigger delete method to back
-    Socket.deleteObject('hello', this.currentMesh.realtimeid)
+    Socket.deleteObject('test', this.currentMesh.realtimeid)
     // Remove it locally
     this.scene.remove(this.currentMesh)
     this.detach()
@@ -62,13 +62,13 @@ class ObjectControls {
 
   objMove(_e) {
     console.log('obj move')
-    console.log(_e, this.transform.object.realtimeid)
-    Socket.moveObject(Socket.roomKey, this.transform.object.position, this.transform.object.realtimeid)
+    console.log(_e, this.transform.object)
+    Socket.moveObject(Socket.roomKey, this.transform.object, this.transform.object.realtimeid)
   }
 
   setEvents() {
     this._objMove = this.objMove.bind(this)
-    const tHandler = this.throttled(50, this._objMove)
+    const tHandler = this.throttled(10, this._objMove)
 
     this.transform.addEventListener('dragging-changed', event => {
       console.log('dragging changed')

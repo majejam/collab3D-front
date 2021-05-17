@@ -9,7 +9,7 @@ class Socket {
   }
 
   init() {
-    this.socket.emit('create', 'hello')
+    this.socket.emit('create', 'test')
   }
 
   join(roomKey) {
@@ -20,12 +20,8 @@ class Socket {
     this.socket.emit('initDatas', roomKey, userId)
   }
 
-  moveX(roomKey) {
-    this.socket.emit('moveX', roomKey)
-  }
-
-  moveObject(roomKey, objectPosition, objectId) {
-    this.socket.emit('objectMoved', roomKey, objectPosition, objectId)
+  moveObject(roomKey, objectMoved, objectId) {
+    this.socket.emit('objectMoved', roomKey, objectMoved, objectId)
   }
 
   addObject(roomKey, objectId) {

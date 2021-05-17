@@ -2,6 +2,7 @@ import Socket from '@/socket/index.js'
 import Object3D from '@/GL/Object3D'
 import Engine from '@/GL/Engine'
 import ObjectControls from '@/GL/ObjectControls'
+import * as THREE from 'three'
 class SceneObject {
   constructor() {
     this.objects = new Array()
@@ -19,7 +20,7 @@ class SceneObject {
       position: { x: 0, y: 0, z: 0 },
     })
     // Set that an object has been add to back
-    Socket.addObject('hello', obj.mesh.realtimeid)
+    Socket.addObject('test', obj.mesh.realtimeid)
   }
 
   synchAddObject(type) {
@@ -76,13 +77,18 @@ class SceneObject {
   }
 
   setEvents() {
-    Socket.socket.on('updateDatas', data => {
-      data.sceneData.objects.forEach(object => {
-        const currentObj = this.findObject(object.objectId)
+    Socket.socket.on('updateDatas', (objectMoved, objectId) => {
+        let refactoredObject = null
+        const loader = new THREE.ObjectLoader()
+        loader.parse(objectMoved, (object) => {
+          refactoredObject = object
+        })
+        const currentObj = this.findObject(objectId)
         if (currentObj) {
-          currentObj.mesh.position.set(object.objectPosition.x, object.objectPosition.y, object.objectPosition.z)
+          currentObj.mesh.position.set(refactoredObject.position.x, refactoredObject.position.y, refactoredObject.position.z)
+          currentObj.mesh.rotation.set(refactoredObject.rotation.x, refactoredObject.rotation.y, refactoredObject.rotation.z)
+          currentObj.mesh.scale.set(refactoredObject.scale.x, refactoredObject.scale.y, refactoredObject.scale.z)
         }
-      })
     })
     Socket.socket.on('addObjectRoom', () => {
       this.synchAddObject('box')
@@ -91,14 +97,21 @@ class SceneObject {
       this.remove(objectId)
     })
     Socket.socket.on('userJoined', (userId) => {
-      Socket.userJoined('hello', userId)
+      Socket.userJoined('test', userId)
     })
     Socket.socket.on('initRoomData', data => {
       data.sceneData.objects.forEach(object => {
         this.synchAddObject('box')
+        let refactoredObject = null
+        const loader = new THREE.ObjectLoader()
+        loader.parse(object.objectMoved, (object) => {
+          refactoredObject = object
+        })
         const currentObj = this.findObject(object.objectId)
         if (currentObj) {
-          currentObj.mesh.position.set(object.objectPosition.x, object.objectPosition.y, object.objectPosition.z)
+          currentObj.mesh.position.set(refactoredObject.position.x, refactoredObject.position.y, refactoredObject.position.z)
+          currentObj.mesh.rotation.set(refactoredObject.rotation.x, refactoredObject.rotation.y, refactoredObject.rotation.z)
+          currentObj.mesh.scale.set(refactoredObject.scale.x, refactoredObject.scale.y, refactoredObject.scale.z)
         }
       })
     })
