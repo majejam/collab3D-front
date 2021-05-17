@@ -1,5 +1,7 @@
 import Socket from '@/socket/index.js'
 import Object3D from '@/GL/Object3D'
+import Engine from '@/GL/Engine'
+import ObjectControls from '@/GL/ObjectControls'
 class SceneObject {
   constructor() {
     this.objects = new Array()
@@ -38,9 +40,12 @@ class SceneObject {
   }
 
   remove(id) {
-    const ids = id
-    var objs = this.objects.filter(obj => {
-      return obj.data.id !== ids
+    const objs = this.objects.filter(obj => {
+      if (obj.mesh.realtimeid === id) {
+        ObjectControls.detach()
+        Engine.scene.remove(obj.mesh)
+      }
+      return obj.mesh.realtimeid !== id
     })
     this.objects = objs
   }
