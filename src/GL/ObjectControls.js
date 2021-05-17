@@ -41,6 +41,9 @@ class ObjectControls {
   }
 
   delete() {
+    // Trigger delete method to back
+    Socket.deleteObject('hello', this.currentMesh.realtimeid)
+    // Remove it locally
     this.scene.remove(this.currentMesh)
     this.detach()
   }
