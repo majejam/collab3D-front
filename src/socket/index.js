@@ -2,7 +2,7 @@ import { io } from 'socket.io-client'
 
 class Socket {
   constructor() {
-    this.socket = io('http://localhost:9000')
+    this.socket = io('https://euclid-back.herokuapp.com:9000')
     this.roomKey = null
     this.userId = null
     console.log('Connection')
