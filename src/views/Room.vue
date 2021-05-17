@@ -22,12 +22,12 @@ export default {
       this.io.join(this.$route.params.roomKey)
     } else {
       this.io.init()
-      this.io.roomKey = 'hello'
+      this.io.roomKey = 'test'
     }
   },
   methods: {
     handleMoveX() {
-      this.io.moveX("hello")
+      this.io.moveX("test")
       this.currentPositionX++
     }
   },
