@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import Engine from '@/GL/Engine'
 import ObjectControls from '@/GL/ObjectControls'
 import SceneObject from '@/GL/SceneObject'
+import Raf from '@/utils/raf'
 
 export default class Object3D {
   constructor(opt = { position: {} }) {
@@ -9,10 +10,12 @@ export default class Object3D {
     this.material = null
     this.mesh = null
     this.opt = opt
-
     this.createObject(this.opt.type)
 
-    if (this.opt.interactable) this.addControls()
+    if (this.opt.userAdded) this.addControls()
+
+    this._update = this.update.bind(this)
+    Raf.add(this._update)
   }
 
   createObject(type) {
@@ -33,11 +36,35 @@ export default class Object3D {
 
     this.mesh.interactable = true
     this.mesh.realtimeid = 0
+    this.mesh.isSelected = false
+
+    this.mesh.selected = this.selected.bind(this)
+    this.mesh.unselected = this.unselected.bind(this)
 
     this.position(this.getPosition().x, this.getPosition().y, this.getPosition().z)
+
+    this.createShaderMesh()
     Engine.scene.add(this.mesh)
-    console.log(this.mesh)
     SceneObject.add(this.mesh)
+  }
+
+  createShaderMesh() {
+    const mat = new THREE.MeshBasicMaterial({ color: 0x00ffff, side: THREE.BackSide })
+    this.shadedMesh = new THREE.Mesh(this.geometry, mat)
+    this.shadedMesh.scale.multiplyScalar(1.05)
+    Engine.scene.add(this.shadedMesh)
+    this.shadedMesh.visible = false
+  }
+
+  selected(color) {
+    this.mesh.isSelected = true
+    this.shadedMesh.material.color.setHex(color)
+    this.shadedMesh.visible = true
+  }
+
+  unselected() {
+    this.mesh.isSelected = false
+    this.shadedMesh.visible = false
   }
 
   /**
@@ -62,5 +89,11 @@ export default class Object3D {
 
   removeControls() {
     ObjectControls.detach()
+  }
+
+  update() {
+    if (this.shadedMesh) {
+      this.shadedMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z)
+    }
   }
 }
