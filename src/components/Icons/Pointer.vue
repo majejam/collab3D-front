@@ -1,0 +1,17 @@
+<template>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1 1L10.1656 23L13.4196 13.4196L23 10.1656L1 1Z" :fill="color" :stroke="color" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+</template>
+
+<script>
+export default {
+  name: 'Pointer',
+  props: {
+    color: {
+      type: String,
+      default: '#FFFFFF',
+    },
+  },
+}
+</script>
