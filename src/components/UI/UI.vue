@@ -6,7 +6,6 @@
         <Icons name="scale" @click="changeMode('scale')" :active="mode == 'scale'" />
         <Icons name="move" @click="changeMode('translate')" :active="mode == 'translate'" />
         <Icons name="rotate" @click="changeMode('rotate')" :active="mode == 'rotate'" />
-        <Icons name="pointer" />
       </div>
     </div>
     <UIViewport />
@@ -26,13 +25,17 @@ export default {
     return {
       SceneObject: SceneObject,
       ObjectControls: ObjectControls,
-      mode: '',
+      mode: 'translate',
     }
   },
   methods: {
     changeMode(mode) {
       this.mode = mode
       this.ObjectControls.transform.setMode(mode)
+    },
+    reset() {
+      this.mode = ''
+      this.ObjectControls.transform.setMode('')
     },
   },
 }
@@ -51,7 +54,7 @@ export default {
 
     &__icons {
       margin-left: 16px;
-      width: 125px;
+      width: 100px;
     }
   }
 }

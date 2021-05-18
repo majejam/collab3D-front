@@ -14,7 +14,7 @@ export default class Keyboard {
           break
 
         case 16: // Shift
-          ObjectControls.transform.setTranslationSnap(100)
+          ObjectControls.transform.setTranslationSnap(1)
           ObjectControls.transform.setRotationSnap(THREE.MathUtils.degToRad(15))
           ObjectControls.transform.setScaleSnap(0.25)
           break
@@ -53,12 +53,18 @@ export default class Keyboard {
           ObjectControls.transform.showZ = !ObjectControls.transform.showZ
           break
 
-        case 32: // Spacebar
-          ObjectControls.transform.enabled = !ObjectControls.transform.enabled
-          break
-
         case 8: // Backspace
           ObjectControls.delete()
+          break
+      }
+    })
+    window.addEventListener('keyup', function (event) {
+      switch (event.keyCode) {
+        case 16: // Shift
+          ObjectControls.transform.setTranslationSnap(0)
+          ObjectControls.transform.setRotationSnap(THREE.MathUtils.degToRad(0))
+          ObjectControls.transform.setScaleSnap(0)
+
           break
       }
     })
