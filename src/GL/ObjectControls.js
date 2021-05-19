@@ -42,7 +42,7 @@ class ObjectControls {
 
   delete() {
     // Trigger delete method to back
-    Socket.deleteObject('test', this.currentMesh.realtimeid)
+    Socket.deleteObject(Socket.roomKey, this.currentMesh.realtimeid)
     // Remove it locally
     this.scene.remove(this.currentMesh)
     this.detach()
@@ -83,11 +83,15 @@ class ObjectControls {
       setTimeout(() => {
         this.dragging = false
       }, 100)
+      // Send object not being modify to back
+      Socket.objectStop(Socket.roomKey, this.transform.object.realtimeid)
     })
 
     this.transform.addEventListener('mouseDown', () => {
       console.log('mouse down')
       this.dragging = true
+      // Send object being modify to back
+      Socket.objectStart(Socket.roomKey, this.transform.object.realtimeid)
     })
   }
 

@@ -115,6 +115,14 @@ class SceneObject {
         }
       })
     })
+    Socket.socket.on('startMoving', (objectId, userId) => {
+      // Create outline of objectSelected
+      console.log(objectId, userId)
+    })
+    Socket.socket.on('stopMoving', (objectId, userId) => {
+      // Remove outline of objectSelected
+      console.log(objectId, userId)
+    })
   }
 }
 
