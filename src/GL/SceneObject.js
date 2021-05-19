@@ -1,4 +1,5 @@
 import Socket from '@/socket/index.js'
+import Users from '@/GL/Users'
 import Object3D from '@/GL/Object3D'
 import Engine from '@/GL/Engine'
 import ObjectControls from '@/GL/ObjectControls'
@@ -116,10 +117,22 @@ class SceneObject {
     Socket.socket.on('startMoving', (objectId, userId) => {
       // Create outline of objectSelected
       console.log(objectId, userId)
+      Users.add(userId)
+      const currentObj = this.findObject(objectId)
+      if (currentObj) {
+        console.log(Users.getUserColor(userId))
+        currentObj.mesh.selected(Users.getUserColor(userId))
+        currentObj.mesh.interactable = false
+      }
     })
     Socket.socket.on('stopMoving', (objectId, userId) => {
       // Remove outline of objectSelected
       console.log(objectId, userId)
+      const currentObj = this.findObject(objectId)
+      if (currentObj) {
+        currentObj.mesh.unselected()
+        currentObj.mesh.interactable = true
+      }
     })
   }
 }

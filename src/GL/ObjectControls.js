@@ -31,12 +31,14 @@ class ObjectControls {
   attach(mesh) {
     this.currentMesh = mesh
     this.transform.attach(mesh)
-    this.currentMesh.selected(0xff0000)
+    // Send object being modify to back
+    Socket.objectStart(Socket.roomKey, this.transform.object.realtimeid)
   }
 
   detach() {
     if (!this.dragging) {
-      this.currentMesh.unselected()
+      // Send object not being modify to back
+      Socket.objectStop(Socket.roomKey, this.transform.object.realtimeid)
       this.transform.detach()
       this.currentMesh = null
     }
@@ -89,15 +91,11 @@ class ObjectControls {
       setTimeout(() => {
         this.dragging = false
       }, 100)
-      // Send object not being modify to back
-      Socket.objectStop(Socket.roomKey, this.transform.object.realtimeid)
     })
 
     this.transform.addEventListener('mouseDown', () => {
       console.log('mouse down')
       this.dragging = true
-      // Send object being modify to back
-      Socket.objectStart(Socket.roomKey, this.transform.object.realtimeid)
     })
   }
 
