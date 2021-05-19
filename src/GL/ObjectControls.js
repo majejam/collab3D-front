@@ -1,6 +1,7 @@
 import Engine from '@/GL/Engine'
 import Camera from '@/GL/Camera'
 import Socket from '@/socket/index.js'
+import Bus from '@/utils/bus'
 
 import { TransformControls } from '@/GL/controls/TransformControls.js'
 
@@ -32,6 +33,7 @@ class ObjectControls {
     this.currentMesh = mesh
     this.transform.attach(mesh)
     // Send object being modify to back
+    Bus.$emit('MeshAttach', mesh)
     Socket.objectStart(Socket.roomKey, this.transform.object.realtimeid)
   }
 
@@ -62,6 +64,15 @@ class ObjectControls {
       }
       lastCall = now
       return fn(...args)
+    }
+  }
+
+  changeColor(color) {
+    /**
+     * Change color here, send event here
+     */
+    if (this.currentMesh) {
+      this.currentMesh.material.color.set(color)
     }
   }
 

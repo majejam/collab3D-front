@@ -6,6 +6,7 @@
         <Icons name="scale" @click="changeMode('scale')" :active="mode == 'scale'" />
         <Icons name="move" @click="changeMode('translate')" :active="mode == 'translate'" />
         <Icons name="rotate" @click="changeMode('rotate')" :active="mode == 'rotate'" />
+        <ColorPicker />
       </div>
     </div>
     <UIViewport />
@@ -16,11 +17,12 @@
 import Button from '@/components/UI/Button'
 import Icons from '@/components/Icons/Icons'
 import UIViewport from '@/components/UI/UIViewport'
+import ColorPicker from '@/components/UI/ColorPicker'
 import SceneObject from '@/GL/SceneObject'
 import ObjectControls from '@/GL/ObjectControls'
 export default {
   name: 'UI',
-  components: { Button, UIViewport, Icons },
+  components: { Button, UIViewport, ColorPicker, Icons },
   data() {
     return {
       SceneObject: SceneObject,
@@ -54,7 +56,7 @@ export default {
 
     &__icons {
       margin-left: 16px;
-      width: 100px;
+      width: 150px;
     }
   }
 }
