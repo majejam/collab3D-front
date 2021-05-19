@@ -31,10 +31,12 @@ class ObjectControls {
   attach(mesh) {
     this.currentMesh = mesh
     this.transform.attach(mesh)
+    this.currentMesh.selected(0xff0000)
   }
 
   detach() {
     if (!this.dragging) {
+      this.currentMesh.unselected()
       this.transform.detach()
       this.currentMesh = null
     }
@@ -77,6 +79,10 @@ class ObjectControls {
     })
 
     this.transform.addEventListener('objectChange', tHandler)
+
+    this.transform.addEventListener('objectChange', () => {
+      this.transform.object.collab()
+    })
 
     this.transform.addEventListener('mouseUp', () => {
       console.log('mouse up')

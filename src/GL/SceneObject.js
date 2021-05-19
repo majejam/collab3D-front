@@ -87,14 +87,7 @@ class SceneObject {
       })
       const currentObj = this.findObject(objectId)
       if (currentObj) {
-        currentObj.mesh.selected(0xff0000)
-        currentObj.mesh.position.set(refactoredObject.position.x, refactoredObject.position.y, refactoredObject.position.z)
-        currentObj.mesh.rotation.set(refactoredObject.rotation.x, refactoredObject.rotation.y, refactoredObject.rotation.z)
-        currentObj.mesh.scale.set(refactoredObject.scale.x, refactoredObject.scale.y, refactoredObject.scale.z)
-      } else {
-        this.objects.forEach(obj => {
-          obj.mesh.unselected()
-        })
+        currentObj.mesh.change(refactoredObject)
       }
     })
     Socket.socket.on('addObjectRoom', () => {
@@ -116,9 +109,7 @@ class SceneObject {
         })
         const currentObj = this.findObject(object.objectId)
         if (currentObj) {
-          currentObj.mesh.position.set(refactoredObject.position.x, refactoredObject.position.y, refactoredObject.position.z)
-          currentObj.mesh.rotation.set(refactoredObject.rotation.x, refactoredObject.rotation.y, refactoredObject.rotation.z)
-          currentObj.mesh.scale.set(refactoredObject.scale.x, refactoredObject.scale.y, refactoredObject.scale.z)
+          currentObj.mesh.change(refactoredObject)
         }
       })
     })

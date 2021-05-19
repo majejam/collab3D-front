@@ -44,6 +44,12 @@ export default class Object3D {
     this.position(this.getPosition().x, this.getPosition().y, this.getPosition().z)
 
     this.createShaderMesh()
+
+    this.mesh.collab = this.moveCollab.bind(this)
+
+    this.mesh.change = this.change.bind(this)
+
+    this.selected(0xff0000)
     Engine.scene.add(this.mesh)
     SceneObject.add(this.mesh)
   }
@@ -71,6 +77,17 @@ export default class Object3D {
    * Helpers
    */
 
+  change(obj) {
+    this.setSpaceValues(this.mesh, obj)
+    this.setSpaceValues(this.shadedMesh, this.mesh, 0.05)
+  }
+
+  setSpaceValues(currentObj, newObj, offset = 0) {
+    currentObj.position.set(newObj.position.x, newObj.position.y, newObj.position.z)
+    currentObj.rotation.set(newObj.rotation.x, newObj.rotation.y, newObj.rotation.z)
+    currentObj.scale.set(newObj.scale.x + offset, newObj.scale.y + offset, newObj.scale.z + offset)
+  }
+
   getPosition() {
     return {
       x: this.opt.position.x ? this.opt.position.x : 0,
@@ -83,6 +100,11 @@ export default class Object3D {
     this.mesh.position.set(x, y, z)
   }
 
+  moveCollab() {
+    //this.shadedMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z)
+    this.setSpaceValues(this.shadedMesh, this.mesh, 0.05)
+  }
+
   addControls() {
     ObjectControls.attach(this.mesh)
   }
@@ -93,7 +115,7 @@ export default class Object3D {
 
   update() {
     if (this.shadedMesh) {
-      this.shadedMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z)
+      //this.shadedMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z)
     }
   }
 }
