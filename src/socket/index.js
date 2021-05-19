@@ -31,6 +31,14 @@ class Socket {
   deleteObject(roomKey, objectId) {
     this.socket.emit('deleteObject', roomKey, objectId)
   }
+
+  objectStart(roomKey, objectId) {
+    this.socket.emit('objectStart', roomKey, objectId)
+  }
+  
+  objectStop(roomKey, objectId) {
+    this.socket.emit('objectStop', roomKey, objectId)
+  }
 }
 
 const SocketInstance = new Socket()
