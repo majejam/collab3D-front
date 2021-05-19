@@ -17,6 +17,7 @@ class SceneObject {
     const obj = new Object3D({
       type: type,
       interactable: true,
+      userAdded: true,
       position: { x: 0, y: 0, z: 0 },
     })
     // Set that an object has been add to back
@@ -27,6 +28,7 @@ class SceneObject {
     new Object3D({
       type: type,
       interactable: true,
+      userAdded: false,
       position: { x: 0, y: 0, z: 0 },
     })
   }
@@ -71,32 +73,30 @@ class SceneObject {
       if (obj.mesh.realtimeid === id) {
         returnedObj = obj
         break
-      } else returnedObj = undefined
+      } else returnedObj = null
     }
     return returnedObj
   }
 
   setEvents() {
     Socket.socket.on('updateDatas', (objectMoved, objectId) => {
-        let refactoredObject = null
-        const loader = new THREE.ObjectLoader()
-        loader.parse(objectMoved, (object) => {
-          refactoredObject = object
-        })
-        const currentObj = this.findObject(objectId)
-        if (currentObj) {
-          currentObj.mesh.position.set(refactoredObject.position.x, refactoredObject.position.y, refactoredObject.position.z)
-          currentObj.mesh.rotation.set(refactoredObject.rotation.x, refactoredObject.rotation.y, refactoredObject.rotation.z)
-          currentObj.mesh.scale.set(refactoredObject.scale.x, refactoredObject.scale.y, refactoredObject.scale.z)
-        }
+      let refactoredObject = null
+      const loader = new THREE.ObjectLoader()
+      loader.parse(objectMoved, object => {
+        refactoredObject = object
+      })
+      const currentObj = this.findObject(objectId)
+      if (currentObj) {
+        currentObj.mesh.change(refactoredObject)
+      }
     })
     Socket.socket.on('addObjectRoom', () => {
       this.synchAddObject('box')
     })
-    Socket.socket.on('deleteObjectInRoom', (objectId) => {
+    Socket.socket.on('deleteObjectInRoom', objectId => {
       this.remove(objectId)
     })
-    Socket.socket.on('userJoined', (userId) => {
+    Socket.socket.on('userJoined', userId => {
       Socket.userJoined('test', userId)
     })
     Socket.socket.on('initRoomData', data => {
@@ -104,14 +104,12 @@ class SceneObject {
         this.synchAddObject('box')
         let refactoredObject = null
         const loader = new THREE.ObjectLoader()
-        loader.parse(object.objectMoved, (object) => {
+        loader.parse(object.objectMoved, object => {
           refactoredObject = object
         })
         const currentObj = this.findObject(object.objectId)
         if (currentObj) {
-          currentObj.mesh.position.set(refactoredObject.position.x, refactoredObject.position.y, refactoredObject.position.z)
-          currentObj.mesh.rotation.set(refactoredObject.rotation.x, refactoredObject.rotation.y, refactoredObject.rotation.z)
-          currentObj.mesh.scale.set(refactoredObject.scale.x, refactoredObject.scale.y, refactoredObject.scale.z)
+          currentObj.mesh.change(refactoredObject)
         }
       })
     })
