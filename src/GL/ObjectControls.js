@@ -69,10 +69,10 @@ class ObjectControls {
   }
 
   changeColor(color) {
-    Socket.changeColor(Socket.roomKey, color, this.transform.object.realtimeid)
     if (this.currentMesh) {
       this.currentMesh.material.color.set(color)
     }
+    Socket.moveObject(Socket.roomKey, this.currentMesh, this.currentMesh.realtimeid)
   }
 
   objMove(_e) {

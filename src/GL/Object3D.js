@@ -85,6 +85,7 @@ export default class Object3D {
   change(obj) {
     this.setSpaceValues(this.mesh, obj)
     this.setSpaceValues(this.shadedMesh, this.mesh, 0.05)
+    this.material.color.set(obj.material.color)
   }
 
   setSpaceValues(currentObj, newObj, offset = 0) {
