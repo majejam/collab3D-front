@@ -1,7 +1,6 @@
 import Socket from '@/socket/index.js'
 import Users from '@/GL/Users'
 import Object3D from '@/GL/Object3D'
-import Engine from '@/GL/Engine'
 import ObjectControls from '@/GL/ObjectControls'
 import * as THREE from 'three'
 class SceneObject {
@@ -57,7 +56,7 @@ class SceneObject {
     const objs = this.objects.filter(obj => {
       if (obj.mesh.realtimeid === id) {
         ObjectControls.detach()
-        Engine.scene.remove(obj.mesh)
+        obj.mesh.delete()
       }
       return obj.mesh.realtimeid !== id
     })

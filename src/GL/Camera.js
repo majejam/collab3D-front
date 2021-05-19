@@ -95,7 +95,7 @@ class Camera {
     })
 
     window.addEventListener('dblclick', () => {
-      this.controls.target = new THREE.Vector3(this.currentObject.position.x, this.currentObject.position.y, this.currentObject.position.z)
+      if (this.currentObject) this.controls.target = new THREE.Vector3(this.currentObject.position.x, this.currentObject.position.y, this.currentObject.position.z)
       this.controls.update()
     })
   }

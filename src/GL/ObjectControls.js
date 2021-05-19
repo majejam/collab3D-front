@@ -38,7 +38,7 @@ class ObjectControls {
   detach() {
     if (!this.dragging) {
       // Send object not being modify to back
-      Socket.objectStop(Socket.roomKey, this.transform.object.realtimeid)
+      if (this.transform.object) Socket.objectStop(Socket.roomKey, this.transform.object.realtimeid)
       this.transform.detach()
       this.currentMesh = null
     }
@@ -48,6 +48,7 @@ class ObjectControls {
     // Trigger delete method to back
     Socket.deleteObject(Socket.roomKey, this.currentMesh.realtimeid)
     // Remove it locally
+    this.currentMesh.delete()
     this.scene.remove(this.currentMesh)
     this.detach()
   }

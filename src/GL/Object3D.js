@@ -48,6 +48,7 @@ export default class Object3D {
     this.mesh.collab = this.moveCollab.bind(this)
 
     this.mesh.change = this.change.bind(this)
+    this.mesh.delete = this.delete.bind(this)
 
     Engine.scene.add(this.mesh)
     SceneObject.add(this.mesh)
@@ -70,6 +71,11 @@ export default class Object3D {
   unselected() {
     this.mesh.isSelected = false
     this.shadedMesh.visible = false
+  }
+
+  delete() {
+    Engine.scene.remove(this.mesh)
+    Engine.scene.remove(this.shadedMesh)
   }
 
   /**
