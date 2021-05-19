@@ -21,7 +21,7 @@ class SceneObject {
       position: { x: 0, y: 0, z: 0 },
     })
     // Set that an object has been add to back
-    Socket.addObject('test', obj.mesh.realtimeid)
+    Socket.addObject('test', obj.mesh, obj.mesh.realtimeid)
   }
 
   synchAddObject(type) {
@@ -104,9 +104,12 @@ class SceneObject {
         this.synchAddObject('box')
         let refactoredObject = null
         const loader = new THREE.ObjectLoader()
+        console.log(object.objectMoved)
         loader.parse(object.objectMoved, object => {
+          console.log(object)
           refactoredObject = object
         })
+        console.log(refactoredObject)
         const currentObj = this.findObject(object.objectId)
         if (currentObj) {
           currentObj.mesh.change(refactoredObject)

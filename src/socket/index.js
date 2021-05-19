@@ -24,8 +24,8 @@ class Socket {
     this.socket.emit('objectMoved', roomKey, objectMoved, objectId)
   }
 
-  addObject(roomKey, objectId) {
-    this.socket.emit('addObject', roomKey, objectId)
+  addObject(roomKey, object, objectId) {
+    this.socket.emit('addObject', roomKey, object, objectId)
   }
 
   deleteObject(roomKey, objectId) {
