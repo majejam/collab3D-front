@@ -30,6 +30,7 @@ class ObjectControls {
   }
 
   attach(mesh) {
+    this.detach()
     this.currentMesh = mesh
     this.transform.attach(mesh)
     // Send object being modify to back
