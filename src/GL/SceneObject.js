@@ -133,6 +133,12 @@ class SceneObject {
         currentObj.mesh.interactable = true
       }
     })
+    Socket.socket.on('updateColor', (color, objectId) => {
+      const currentObj = this.findObject(objectId)
+      if (currentObj) {
+        currentObj.mesh.material.color.set(color)
+      }
+    })
   }
 }
 

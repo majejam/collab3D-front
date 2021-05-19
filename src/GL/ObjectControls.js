@@ -69,9 +69,7 @@ class ObjectControls {
   }
 
   changeColor(color) {
-    /**
-     * Change color here, send event here
-     */
+    Socket.changeColor(Socket.roomKey, color, this.transform.object.realtimeid)
     if (this.currentMesh) {
       this.currentMesh.material.color.set(color)
     }

@@ -24,6 +24,10 @@ class Socket {
     this.socket.emit('objectMoved', roomKey, objectMoved, objectId)
   }
 
+  changeColor(roomKey, color, objectId) {
+    this.socket.emit('changeColor', roomKey, color, objectId)
+  }
+
   addObject(roomKey, objectId) {
     this.socket.emit('addObject', roomKey, objectId)
   }
