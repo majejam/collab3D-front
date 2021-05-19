@@ -12,7 +12,7 @@ export default class Object3D {
     this.opt = opt
     this.createObject(this.opt.type)
 
-    if (this.opt.userAdded) this.addControls()
+    //if (this.opt.userAdded) this.addControls()
 
     this._update = this.update.bind(this)
     Raf.add(this._update)
@@ -49,7 +49,6 @@ export default class Object3D {
 
     this.mesh.change = this.change.bind(this)
 
-    this.selected(0xff0000)
     Engine.scene.add(this.mesh)
     SceneObject.add(this.mesh)
   }

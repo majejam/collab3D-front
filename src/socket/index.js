@@ -35,7 +35,7 @@ class Socket {
   objectStart(roomKey, objectId) {
     this.socket.emit('objectStart', roomKey, objectId)
   }
-  
+
   objectStop(roomKey, objectId) {
     this.socket.emit('objectStop', roomKey, objectId)
   }
