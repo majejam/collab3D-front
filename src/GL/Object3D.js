@@ -63,7 +63,7 @@ export default class Object3D {
 
   selected(color) {
     this.mesh.isSelected = true
-    this.shadedMesh.material.color.setHex(color)
+    this.shadedMesh.material.color.set(color)
     this.shadedMesh.visible = true
   }
 
