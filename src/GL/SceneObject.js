@@ -7,6 +7,8 @@ class SceneObject {
   constructor() {
     this.objects = new Array()
     this.id = 1
+
+    this.hasInit = false
   }
 
   init() {
@@ -90,7 +92,7 @@ class SceneObject {
         currentObj.mesh.change(refactoredObject)
       }
     })
-    Socket.socket.on('addObjectRoom', (type) => {
+    Socket.socket.on('addObjectRoom', type => {
       this.synchAddObject(type)
     })
     Socket.socket.on('deleteObjectInRoom', objectId => {
@@ -98,22 +100,26 @@ class SceneObject {
     })
     Socket.socket.on('userJoined', userId => {
       Socket.userJoined('test', userId)
+      Users.add(userId)
     })
     Socket.socket.on('initRoomData', data => {
-      data.sceneData.objects.forEach(object => {
-        let refactoredObject = null
-        this.synchAddObject(object.objectMoved.geometries[0].type)
-        const loader = new THREE.ObjectLoader()
-        loader.parse(object.objectMoved, object => {
-          console.log(object)
-          refactoredObject = object
+      if (!this.hasInit) {
+        data.sceneData.objects.forEach(object => {
+          let refactoredObject = null
+          this.synchAddObject(object.objectMoved.geometries[0].type)
+          const loader = new THREE.ObjectLoader()
+          loader.parse(object.objectMoved, object => {
+            console.log(object)
+            refactoredObject = object
+          })
+          console.log(refactoredObject)
+          const currentObj = this.findObject(object.objectId)
+          if (currentObj) {
+            currentObj.mesh.change(refactoredObject)
+          }
         })
-        console.log(refactoredObject)
-        const currentObj = this.findObject(object.objectId)
-        if (currentObj) {
-          currentObj.mesh.change(refactoredObject)
-        }
-      })
+        this.hasInit = true
+      }
     })
     Socket.socket.on('startMoving', (objectId, userId) => {
       // Create outline of objectSelected
@@ -135,8 +141,9 @@ class SceneObject {
         currentObj.mesh.interactable = true
       }
     })
-    Socket.socket.on('userDisconnected', (userId) => {
+    Socket.socket.on('userDisconnected', userId => {
       console.log(userId)
+      Users.remove(userId)
     })
   }
 }

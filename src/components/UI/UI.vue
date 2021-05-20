@@ -2,7 +2,7 @@
   <div class="UI">
     <div class="UI__topbar grid">
       <DropDown
-        ><Button @click="SceneObject.addObject('box')">Cube</Button><Button @click="SceneObject.addObject('TorusKnot')">Thorus Knot</Button
+        ><Button @click="SceneObject.addObject('BoxGeometry')">Cube</Button><Button @click="SceneObject.addObject('TorusKnotGeometry')">Thorus Knot</Button
         ><Button @click="SceneObject.addObject('TorusGeometry')">Torus Geometry</Button></DropDown
       >
       <div class="UI__topbar__icons grid grid-between" v-if="ObjectControls.transform">
@@ -12,6 +12,8 @@
         <ColorPicker />
       </div>
     </div>
+
+    <UIUsers />
     <UIViewport />
   </div>
 </template>
@@ -20,13 +22,14 @@
 import Button from '@/components/UI/Button'
 import Icons from '@/components/Icons/Icons'
 import UIViewport from '@/components/UI/UIViewport'
+import UIUsers from '@/components/UI/UIUsers'
 import ColorPicker from '@/components/UI/ColorPicker'
 import DropDown from '@/components/UI/DropDown'
 import SceneObject from '@/GL/SceneObject'
 import ObjectControls from '@/GL/ObjectControls'
 export default {
   name: 'UI',
-  components: { Button, UIViewport, ColorPicker, DropDown, Icons },
+  components: { Button, UIViewport, UIUsers, ColorPicker, DropDown, Icons },
   data() {
     return {
       SceneObject: SceneObject,

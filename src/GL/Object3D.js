@@ -20,11 +20,11 @@ export default class Object3D {
 
   createObject(type) {
     switch (type) {
-      case 'box':
+      case 'BoxGeometry':
         this.createBox()
         break
 
-      case 'TorusKnot':
+      case 'TorusKnotGeometry':
         this.createTorusKnot()
         break
 
