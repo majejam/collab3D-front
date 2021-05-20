@@ -21,7 +21,7 @@ class SceneObject {
       position: { x: 0, y: 0, z: 0 },
     })
     // Set that an object has been add to back
-    Socket.addObject('test', obj.mesh, obj.mesh.realtimeid)
+    Socket.addObject('test', type, obj.mesh, obj.mesh.realtimeid)
   }
 
   synchAddObject(type) {
@@ -90,8 +90,8 @@ class SceneObject {
         currentObj.mesh.change(refactoredObject)
       }
     })
-    Socket.socket.on('addObjectRoom', () => {
-      this.synchAddObject('box')
+    Socket.socket.on('addObjectRoom', (type) => {
+      this.synchAddObject(type)
     })
     Socket.socket.on('deleteObjectInRoom', objectId => {
       this.remove(objectId)
@@ -101,10 +101,9 @@ class SceneObject {
     })
     Socket.socket.on('initRoomData', data => {
       data.sceneData.objects.forEach(object => {
-        this.synchAddObject('box')
         let refactoredObject = null
+        this.synchAddObject(object.objectMoved.geometries[0].type)
         const loader = new THREE.ObjectLoader()
-        console.log(object.objectMoved)
         loader.parse(object.objectMoved, object => {
           console.log(object)
           refactoredObject = object
