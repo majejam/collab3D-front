@@ -135,6 +135,9 @@ class SceneObject {
         currentObj.mesh.interactable = true
       }
     })
+    Socket.socket.on('userDisconnected', (userId) => {
+      console.log(userId)
+    })
   }
 }
 
