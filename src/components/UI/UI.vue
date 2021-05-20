@@ -1,7 +1,10 @@
 <template>
   <div class="UI">
     <div class="UI__topbar grid">
-      <Button @click="SceneObject.addObject('box')">Add cube</Button>
+      <DropDown
+        ><Button @click="SceneObject.addObject('box')">Cube</Button><Button @click="SceneObject.addObject('TorusKnot')">Thorus Knot</Button
+        ><Button @click="SceneObject.addObject('TorusGeometry')">Torus Geometry</Button></DropDown
+      >
       <div class="UI__topbar__icons grid grid-between" v-if="ObjectControls.transform">
         <Icons name="scale" @click="changeMode('scale')" :active="mode == 'scale'" />
         <Icons name="move" @click="changeMode('translate')" :active="mode == 'translate'" />
@@ -18,11 +21,12 @@ import Button from '@/components/UI/Button'
 import Icons from '@/components/Icons/Icons'
 import UIViewport from '@/components/UI/UIViewport'
 import ColorPicker from '@/components/UI/ColorPicker'
+import DropDown from '@/components/UI/DropDown'
 import SceneObject from '@/GL/SceneObject'
 import ObjectControls from '@/GL/ObjectControls'
 export default {
   name: 'UI',
-  components: { Button, UIViewport, ColorPicker, Icons },
+  components: { Button, UIViewport, ColorPicker, DropDown, Icons },
   data() {
     return {
       SceneObject: SceneObject,

@@ -23,35 +23,69 @@ export default class Object3D {
       case 'box':
         this.createBox()
         break
+
+      case 'TorusKnot':
+        this.createTorusKnot()
+        break
+
+      case 'TorusGeometry':
+        this.createTorusGeometry()
+        break
+
       default:
         console.log(`Sorry, ${type} not yet defined.`)
     }
   }
 
   createBox() {
-    this.color = this.opt.color ? this.opt.color : 0x00ff00
     this.geometry = new THREE.BoxGeometry(1, 1, 1)
-    this.material = new THREE.MeshBasicMaterial({ color: this.color })
+    this.setupMaterial()
     this.mesh = new THREE.Mesh(this.geometry, this.material)
 
+    this.meshBase()
+  }
+
+  createTorusKnot() {
+    this.geometry = new THREE.TorusKnotGeometry(1, 0.2, 100, 16)
+    this.setupMaterial()
+    this.mesh = new THREE.Mesh(this.geometry, this.material)
+
+    this.meshBase()
+  }
+
+  createTorusGeometry() {
+    this.geometry = new THREE.TorusGeometry(1, 0.2, 16, 100)
+    this.setupMaterial()
+    this.mesh = new THREE.Mesh(this.geometry, this.material)
+
+    this.meshBase()
+  }
+
+  createMeshInfos() {
     this.mesh.interactable = true
     this.mesh.realtimeid = 0
     this.mesh.isSelected = false
-
     this.mesh.selected = this.selected.bind(this)
     this.mesh.unselected = this.unselected.bind(this)
+    this.mesh.collab = this.moveCollab.bind(this)
+    this.mesh.change = this.change.bind(this)
+    this.mesh.delete = this.delete.bind(this)
+  }
+
+  meshBase() {
+    this.createMeshInfos()
 
     this.position(this.getPosition().x, this.getPosition().y, this.getPosition().z)
 
     this.createShaderMesh()
 
-    this.mesh.collab = this.moveCollab.bind(this)
-
-    this.mesh.change = this.change.bind(this)
-    this.mesh.delete = this.delete.bind(this)
-
     Engine.scene.add(this.mesh)
     SceneObject.add(this.mesh)
+  }
+
+  setupMaterial() {
+    this.color = this.opt.color ? this.opt.color : 0x888888
+    this.material = new THREE.MeshBasicMaterial({ color: this.color })
   }
 
   createShaderMesh() {

@@ -66,6 +66,8 @@ class Engine {
         antialias: true,
       })
     }
+
+    this.renderer.setClearColor(0x333333, 1)
   }
 
   createScene() {
