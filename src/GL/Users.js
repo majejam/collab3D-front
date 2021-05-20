@@ -16,7 +16,7 @@ class Users {
 
   add(data) {
     if (this.getUser(data) === null) {
-      this.users.push({ id: data, color: this.colors[Math.round(Math.random() * 9)] })
+      this.users.push({ id: data, objectId: null, color: this.colors[Math.round(Math.random() * 9)] })
     }
   }
 
